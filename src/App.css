@@ -1,4 +1,3 @@
-/* Estilos globais */
 body {
   background: linear-gradient(135deg, #000000, #2a003d);
   color: #ffffff;
@@ -18,13 +17,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px;
   background-color: rgba(0, 0, 0, 0.7);
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-content span {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   letter-spacing: 2px;
 }
@@ -35,20 +34,20 @@ body {
 }
 
 .header-content input {
-  padding: 10px;
-  margin-right: 5px;
+  padding: 12px;
+  margin-right: 10px;
   border: none;
   border-radius: 20px;
-  width: 180px;
-  font-size: 14px;
+  width: 250px;
+  font-size: 16px;
 }
 
 .header-content button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   border: none;
   background-color: #2a003d;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 20px;
   transition: background-color 0.3s;
@@ -58,14 +57,13 @@ body {
   background-color: #8a2be2;
 }
 
-/* Botão padrão */
 .button {
   display: inline-block;
   background-color: #2a003d;
   color: #fff;
   border: none;
-  padding: 10px 15px;
-  font-size: 14px;
+  padding: 12px 20px;
+  font-size: 16px;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -75,10 +73,10 @@ body {
   background-color: #9b5de5;
 }
 
-/* Seção hero */
 .hero {
   text-align: center;
-  padding: 60px 0;
+  padding: 80px 0;
+  position: relative;
   color: #ffffff;
 }
 
@@ -89,11 +87,11 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 40px;
 }
 
 .hero h1 {
-  font-size: 36px;
+  font-size: 48px;
   margin: 10px 0;
   font-weight: bold;
   text-transform: capitalize;
@@ -101,32 +99,32 @@ body {
 }
 
 .hero-overview {
-  font-size: 16px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.5;
-  max-width: 90%;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Pôster do filme */
 .hero-poster {
-  width: 250px;
+  width: 300px;
   height: auto;
   border-radius: 10px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 1;
 }
 
-/* Trailer do filme */
 .movie-trailer iframe {
-  max-width: 90%;
+  max-width: 800px;
   width: 100%;
-  height: 280px;
+  height: 450px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+  z-index: 2;
 }
 
-/* Botões de navegação */
 .navigation-buttons {
   position: absolute;
   top: 50%;
@@ -136,10 +134,29 @@ body {
   width: 100%;
   padding: 0 10px;
 }
+.nav-button {
+  background-color: transparent;
+  line-height: 0;
+  margin: 0;
+  padding-left: 6px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-right: 8px;
+  height: fit-content;
+  width: fit-content;
+}
 
 .nav-button {
   background-color: transparent;
   color: #fff;
+  line-height: 0;
+  margin: 0;
+  padding-left: 6px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-right: 8px;
+  height: fit-content;
+  width: fit-content;
   border: 2px solid #fff;
   padding: 12px;
   font-size: 24px;
@@ -153,27 +170,54 @@ body {
   transform: scale(1.1);
 }
 
-/* Grid de filmes */
+.hero-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-content .button {
+  background-color: #2a003d;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  margin-bottom: -620px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-content .button:hover {
+  background-color: #9b5de5;
+}
+
 .container {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding: 15px;
+  padding: 20px;
   display: grid;
-  gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
 .movie-card {
   background-color: rgba(0, 0, 0, 0.208);
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px;
   text-align: center;
+  position: relative;
   transition: transform 0.3s ease-in-out;
 }
 
 .movie-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .movie-card img {
@@ -184,34 +228,81 @@ body {
 
 .movie-card h5 {
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   color: #fff;
   text-transform: capitalize;
 }
 
-/* Responsividade */
+.hero-poster-container {
+  position: relative;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button {
+  margin-left: 20px;
+  position: absolute;
+  bottom: 550px;
+}
+
+.hero-content h1,
+.hero-content p {
+  text-align: center;
+}
+
+.hero-content .button-container {
+  margin-top: 30px;
+}
+
+.movie-trailer {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.movie-trailer iframe {
+  max-width: 800px;
+  width: 100%;
+  height: 450px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
 @media (min-width: 1200px) {
   .hero h1 {
-    font-size: 48px;
+    font-size: 64px;
   }
 
   .hero-overview {
-    font-size: 18px;
+    font-size: 20px;
     max-width: 900px;
   }
 
   .hero-poster {
-    width: 300px;
+    width: 350px;
   }
 
-  .movie-trailer iframe {
-    max-width: 800px;
-    height: 450px;
+  .movie-card {
+    padding: 20px;
+  }
+
+  .movie-card img {
+    width: 100%;
   }
 
   .container {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .movie-trailer iframe {
+    max-width: 1000px;
+    height: 500px;
   }
 }
 
@@ -222,71 +313,10 @@ body {
   }
 
   .hero-poster {
-    width: 180px;
+    width: 250px;
   }
 
-  .container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .header-content span {
-    font-size: 20px;
-  }
-
-  .header-content input {
-    width: 140px;
-  }
-
-  .movie-trailer iframe {
-    height: 300px;
-  }
-
-  .movie-card img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero-overview {
-    font-size: 14px;
-  }
-
-  .hero-poster {
-    width: 150px;
-  }
-
-  .container {
-    grid-template-columns: 1fr;
-  }
-
-  .header-content span {
-    font-size: 18px;
-  }
-
-  .header-content input {
-    width: 120px;
-    padding: 8px;
-  }
-
-  .movie-trailer iframe {
-    height: 220px;
-  }
-
-  .movie-card {
-    padding: 8px;
-  }
-
-  .movie-card img {
-    width: 100%;
-    height: auto;
-  }
-
-  .movie-card h5 {
-    font-size: 14px;
+  .button {
+    margin-top: 10px;
   }
 }
