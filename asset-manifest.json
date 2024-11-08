@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/ReactFlix/static/css/main.027a1c3a.css",
-    "main.js": "/ReactFlix/static/js/main.2f9c418a.js",
-    "static/js/453.a372d1eb.chunk.js": "/ReactFlix/static/js/453.a372d1eb.chunk.js",
+    "main.js": "/ReactFlix/static/js/main.ec497b46.js",
+    "static/js/453.c26825d5.chunk.js": "/ReactFlix/static/js/453.c26825d5.chunk.js",
     "index.html": "/ReactFlix/index.html",
     "main.027a1c3a.css.map": "/ReactFlix/static/css/main.027a1c3a.css.map",
-    "main.2f9c418a.js.map": "/ReactFlix/static/js/main.2f9c418a.js.map",
-    "453.a372d1eb.chunk.js.map": "/ReactFlix/static/js/453.a372d1eb.chunk.js.map"
+    "main.ec497b46.js.map": "/ReactFlix/static/js/main.ec497b46.js.map",
+    "453.c26825d5.chunk.js.map": "/ReactFlix/static/js/453.c26825d5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.027a1c3a.css",
-    "static/js/main.2f9c418a.js"
+    "static/js/main.ec497b46.js"
   ]
 }
