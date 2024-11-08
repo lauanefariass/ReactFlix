@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import MovieCard from "./components/MovieCard/MovieCard";
 import MovieTrailer from "./components/MovieTrailer/MovieTrailer";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function App() {
   const API_URL = "https://api.themoviedb.org/3";
@@ -133,13 +134,13 @@ function App() {
                   className="nav-button prev-button"
                   onClick={handlePrevMovie}
                 >
-                  &lt;
+                  <ChevronLeft />
                 </button>
                 <button
                   className="nav-button next-button"
                   onClick={handleNextMovie}
                 >
-                  &gt;
+                  <ChevronRight />
                 </button>
               </div>
             </>
