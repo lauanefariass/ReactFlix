@@ -4,7 +4,9 @@ body {
   background-color: #121212;
   color: #fff;
 }
-
+.react-multi-carousel-item {
+  width: 250px !important;
+}
 .header {
   display: flex;
   align-items: center;
