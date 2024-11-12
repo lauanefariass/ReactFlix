@@ -14,14 +14,14 @@ body {
 
 .search-bar {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .search-bar input {
   padding: 8px;
   border: 1px solid transparent;
   border-radius: 20px;
-  color: #fff;
+  color: black;
 }
 
 .search-bar button {
@@ -35,7 +35,7 @@ body {
 }
 
 .search-bar button:hover {
-  background-color: #e14a1c;
+  background-color: #6e509e;
 }
 
 .search-results,
@@ -66,15 +66,15 @@ body {
 }
 
 .hero button {
-  padding: 0.5rem 1rem;
+  padding: 10px;
   border: none;
-  border-radius: 4px;
-  background-color: #ff5733;
+  border-radius: 20px;
+  background-color: #2d1b4a;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .hero button:hover {
-  background-color: #e14a1c;
+  background-color: #6e509e;
 }
