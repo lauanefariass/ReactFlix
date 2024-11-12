@@ -1,22 +1,100 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchMovie } from "./API/apiCalls";
+import {
+  fetchMovie,
+  fetchMovieCast,
+  fetchSimilarMovies,
+  fetchPersonDetails,
+} from "./API/apiCalls";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 function Movie() {
   const { id } = useParams();
   const [movie, setMovie] = useState({});
+  const [cast, setCast] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [personDetails, setPersonDetails] = useState(null);
+
   useEffect(() => {
     fetchMovie(id, setMovie);
-  });
-  console.log(movie, "single movie");
+    fetchMovieCast(id, setCast);
+    fetchSimilarMovies(id, setSimilarMovies);
+  }, [id]);
+
+  useEffect(() => {
+    if (cast.length > 0) {
+      fetchPersonDetails(cast[0].id, setPersonDetails);
+    }
+  }, [cast]);
+
+  const responsive = {
+    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 6 },
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 3 },
+    tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+  };
+
   return (
-    <div>
-      {/* <img
+    <div className="movie-page">
+      <div className="hero">
+        <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
         />
-        <h2>{movie.title}</h2> */}
+        <h2>{movie.title}</h2>
+        <p>{movie.overview}</p>
+      </div>
+
+      {cast.length > 0 && (
+        <div className="movie-cast">
+          <h3>Cast</h3>
+          <Carousel responsive={responsive}>
+            {cast.slice(0, 10).map((actor) => (
+              <div key={actor.id} className="cast-member">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                  alt={actor.name}
+                />
+                <p>{actor.name}</p>
+                <p>{actor.character}</p>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      )}
+
+      {personDetails && (
+        <div className="person-details">
+          <h3>Featured Actor: {personDetails.name}</h3>
+          <div className="details-content">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${personDetails.profile_path}`}
+              alt={personDetails.name}
+            />
+            <p>{personDetails.biography}</p>
+          </div>
+        </div>
+      )}
+
+      {similarMovies.length > 0 && (
+        <div className="similar-movies">
+          <h3>Similar Movies</h3>
+          <Carousel responsive={responsive}>
+            {similarMovies.map((movie) => (
+              <div key={movie.id} className="movie-card">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <h4>{movie.title}</h4>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      )}
     </div>
   );
 }
+
 export default Movie;
