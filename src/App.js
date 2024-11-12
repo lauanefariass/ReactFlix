@@ -5,6 +5,7 @@ import UpcomingMovies from "./components/API/UpcomingMovies";
 import PopularMovies from "./components/API/PopularMovies";
 import NowPlayingMovies from "./components/API/NowPlayingMovies";
 import MovieTrailer from "./components/MovieTrailer";
+import "react-multi-carousel/lib/styles.css";
 
 function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);

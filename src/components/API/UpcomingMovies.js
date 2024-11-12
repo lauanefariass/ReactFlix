@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../MovieCard";
+import Carousel from "react-multi-carousel";
 
 const UpcomingMovies = ({ onSelectMovie }) => {
   const [movies, setMovies] = useState([]);
@@ -19,10 +20,29 @@ const UpcomingMovies = ({ onSelectMovie }) => {
     fetchMovies();
   }, []);
 
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 6,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
   return (
     <div className="movie-category">
       <h2>Upcoming Movies</h2>
-      <div className="movie-list">
+      <Carousel responsive={responsive}>
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
@@ -30,7 +50,8 @@ const UpcomingMovies = ({ onSelectMovie }) => {
             onClick={() => onSelectMovie(movie)}
           />
         ))}
-      </div>
+      </Carousel>
+      <div className="movie-list"></div>
     </div>
   );
 };
