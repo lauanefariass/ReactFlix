@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchMovies } from "./apiCalls";
 import MovieCard from "../MovieCard";
 import Carousel from "react-multi-carousel";
+import { Link } from "react-router-dom";
 
 const TopRatedMovies = ({ onSelectMovie }) => {
   const [movies, setMovies] = useState([]);

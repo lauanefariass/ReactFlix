@@ -4,7 +4,10 @@ body {
   background-color: #121212;
   color: #fff;
 }
-
+a {
+  color: unset;
+  text-decoration: none;
+}
 .react-multi-carousel-item {
   width: 250px !important;
 }
