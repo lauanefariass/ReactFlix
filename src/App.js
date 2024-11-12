@@ -1,160 +1,90 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import MovieCard from "./components/MovieCard/MovieCard";
-import MovieTrailer from "./components/MovieTrailer/MovieTrailer";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import TopRatedMovies from "./components/API/TopRatedMovies";
+import UpcomingMovies from "./components/API/UpcomingMovies";
+import PopularMovies from "./components/API/PopularMovies";
+import NowPlayingMovies from "./components/API/NowPlayingMovies";
+import MovieTrailer from "./components/MovieTrailer";
 
 function App() {
-  const API_URL = "https://api.themoviedb.org/3";
-  const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [searchKey, setSearchKey] = useState("");
   const [showTrailer, setShowTrailer] = useState(false);
-  const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
-  const fetchMovies = async (query = "") => {
-    try {
-      const url = query
-        ? `${API_URL}/search/movie?api_key=01947fdc028668cbba608f3d08618bef&query=${query}`
-        : `${API_URL}/discover/movie?api_key=01947fdc028668cbba608f3d08618bef`;
-      const response = await fetch(url);
-      const { results } = await response.json();
-      setMovies(results);
-      setSelectedMovie(results[0] || null);
-    } catch (error) {
-      console.error("Erro ao buscar filmes:", error);
-    }
-  };
-
-  const fetchTrailer = async (movieId) => {
-    try {
-      const trailerResponse = await fetch(
-        `${API_URL}/movie/${movieId}/videos?api_key=01947fdc028668cbba608f3d08618bef`
-      );
-      const trailer = (await trailerResponse.json()).results.find(
-        (video) => video.type === "Trailer"
-      );
-      if (trailer) {
-        setSelectedMovie((prevState) => ({
-          ...prevState,
-          trailer: trailer.key,
-        }));
-      }
-    } catch (error) {
-      console.error("Erro ao buscar trailer:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
-
-  const handleSearchInputChange = (e) => {
-    const query = e.target.value;
-    setSearchKey(query);
-    fetchMovies(query);
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    fetchMovies(searchKey);
-  };
-
-  const handlePlayTrailer = () => {
-    if (selectedMovie && !selectedMovie.trailer) fetchTrailer(selectedMovie.id);
-    setShowTrailer(true);
-  };
-
+  const handlePlayTrailer = () => setShowTrailer(true);
   const handleStopTrailer = () => setShowTrailer(false);
+  const onSelectMovie = (movie) => setSelectedMovie(movie);
 
-  const handleNextMovie = () => {
-    const nextIndex = (selectedMovieIndex + 1) % movies.length;
-    setSelectedMovieIndex(nextIndex);
-    setSelectedMovie(movies[nextIndex]);
-    setShowTrailer(false);
-  };
-
-  const handlePrevMovie = () => {
-    const prevIndex = (selectedMovieIndex - 1 + movies.length) % movies.length;
-    setSelectedMovieIndex(prevIndex);
-    setSelectedMovie(movies[prevIndex]);
-    setShowTrailer(false);
+  const handleSearch = async () => {
+    if (searchQuery.trim() === "") return;
+    const API_URL = `https://api.themoviedb.org/3/search/movie?api_key=01947fdc028668cbba608f3d08618bef&language=en-US&query=${searchQuery}`;
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setFilteredMovies(data.results);
+    } catch (error) {
+      console.error("Error searching movies:", error);
+    }
   };
 
   return (
     <div className="App">
       <header className="header">
-        <div className="header-content max-center">
-          <span>ReactFlix</span>
-          <form onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              placeholder="Search for a movie"
-              value={searchKey}
-              onChange={handleSearchInputChange}
-            />
-            <button type="submit">Search!</button>
-          </form>
+        <h1>ReactFlix</h1>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search for a movie..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={handleSearch}>Search</button>
         </div>
       </header>
 
-      <div className="hero">
-        <div className="hero-content max-center">
-          {selectedMovie ? (
-            <>
-              <h1>{selectedMovie.title}</h1>
-              <p className="hero-overview">
-                {selectedMovie.overview || "No description available"}
-              </p>
-              {!showTrailer ? (
-                <>
-                  <img
-                    className="movie-poster"
-                    src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
-                    alt={selectedMovie.title}
-                  />
-                  <button className="button" onClick={handlePlayTrailer}>
-                    Play Trailer
-                  </button>
-                </>
-              ) : (
-                <>
-                  <MovieTrailer trailerKey={selectedMovie.trailer} />
-                  <button
-                    className="button stop-button"
-                    onClick={handleStopTrailer}
-                  >
-                    Stop Trailer
-                  </button>
-                </>
-              )}
+      <div className="movie-category-buttons">
+        <TopRatedMovies onSelectMovie={onSelectMovie} />
+        <UpcomingMovies onSelectMovie={onSelectMovie} />
+        <PopularMovies onSelectMovie={onSelectMovie} />
+        <NowPlayingMovies onSelectMovie={onSelectMovie} />
+      </div>
 
-              <div className="navigation-buttons">
-                <button
-                  className="nav-button prev-button"
-                  onClick={handlePrevMovie}
-                >
-                  <ChevronLeft />
-                </button>
-                <button
-                  className="nav-button next-button"
-                  onClick={handleNextMovie}
-                >
-                  <ChevronRight />
-                </button>
+      {filteredMovies.length > 0 ? (
+        <div className="search-results">
+          <h2>Search Results</h2>
+          <div className="movie-list">
+            {filteredMovies.map((movie) => (
+              <div
+                key={movie.id}
+                className="movie-card"
+                onClick={() => onSelectMovie(movie)}
+              >
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <h3>{movie.title}</h3>
               </div>
-            </>
-          ) : (
-            <h1>Select a Movie</h1>
-          )}
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="container">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+      ) : (
+        selectedMovie && (
+          <div className="hero">
+            <h1>{selectedMovie.title}</h1>
+            <p>{selectedMovie.overview}</p>
+            {!showTrailer ? (
+              <button onClick={handlePlayTrailer}>Play Trailer</button>
+            ) : (
+              <>
+                <MovieTrailer trailerKey={selectedMovie.trailer} />
+                <button onClick={handleStopTrailer}>Stop Trailer</button>
+              </>
+            )}
+          </div>
+        )
+      )}
     </div>
   );
 }
