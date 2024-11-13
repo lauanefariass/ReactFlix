@@ -58,7 +58,7 @@ const Home = () => {
           <button
             onClick={() => {
               if (searchTerm) {
-                setSearchTerm(searchTerm); // Aciona a busca quando o botão é clicado
+                setSearchTerm(searchTerm); 
               }
             }}
           >

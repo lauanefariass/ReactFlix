@@ -8,7 +8,7 @@ import {
   fetchMovieTrailer,
 } from "./API/apiCalls";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css"; // Estilos para o carrossel
+import "react-multi-carousel/lib/styles.css";
 
 function Movie() {
   const { id } = useParams();
@@ -16,8 +16,8 @@ function Movie() {
   const [cast, setCast] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [personDetails, setPersonDetails] = useState(null);
-  const [trailerUrl, setTrailerUrl] = useState(""); // URL do trailer
-  const [isPlaying, setIsPlaying] = useState(false); // Controle para exibir o trailer ou pôster
+  const [trailerUrl, setTrailerUrl] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     fetchMovie(id, setMovie);
@@ -57,8 +57,8 @@ function Movie() {
       <div className="hero">
         {isPlaying ? (
           <iframe
-            width="560"
-            height="315"
+            width="760"
+            height="415"
             src={trailerUrl}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -75,7 +75,6 @@ function Movie() {
         <h2>{movie.title}</h2>
         <p>{movie.overview}</p>
 
-        {/* Botões para Play e Stop */}
         {!isPlaying && trailerUrl && (
           <button onClick={handlePlay}>Play Trailer</button>
         )}
