@@ -7,7 +7,7 @@ const UpcomingMovies = ({ onSelectMovie }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetchMovies("upcoming", (data) => setMovies(data));
+    fetchMovies("upcoming", (data) => setMovies(data)); // Passa "upcoming" para a API
   }, []);
 
   const responsive = {

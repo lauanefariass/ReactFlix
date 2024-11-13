@@ -67,3 +67,15 @@ export async function fetchPersonDetails(personId, callback) {
     callback(null);
   }
 }
+export const fetchMovieTrailer = async (id) => {
+  const url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=01947fdc028668cbba608f3d08618bef`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const trailer = data.results.find((video) => video.type === "Trailer");
+    return trailer || null;
+  } catch (error) {
+    console.error("Error fetching trailer:", error);
+    return null;
+  }
+};
