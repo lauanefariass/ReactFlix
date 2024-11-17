@@ -1,51 +1,80 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchMoviesByCategory,
+  fetchTopRatedMovies,
+  fetchNowPlayingMovies,
+  fetchUpcomingMovies,
+} from "./redux/features/moviesSlice";
 import MovieCard from "./components/MovieCard";
-import PopularMovies from "./components/API/PopularMovies";
-import TopRatedMovies from "./components/API/TopRatedMovies";
-import UpcomingMovies from "./components/API/UpcomingMovies";
-import NowPlayingMovies from "./components/API/NowPlayingMovies";
 import "./App.css";
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchResults, setSearchResults] = useState([]); 
+  const [loadingSearch, setLoadingSearch] = useState(false); 
+  const [errorSearch, setErrorSearch] = useState(null); 
 
+  const dispatch = useDispatch();
+  const {
+    popularMovies,
+    topRatedMovies,
+    nowPlayingMovies,
+    upcomingMovies,
+    status,
+    error,
+  } = useSelector((state) => state.movies);
+
+  
   useEffect(() => {
-    if (searchTerm === "") {
+    dispatch(fetchMoviesByCategory());
+    dispatch(fetchTopRatedMovies());
+    dispatch(fetchNowPlayingMovies());
+    dispatch(fetchUpcomingMovies());
+  }, [dispatch]);
+
+  
+  useEffect(() => {
+    if (!searchTerm) {
       setSearchResults([]);
-      setError(null);
+      setErrorSearch(null);
       return;
     }
 
-    const fetchMovies = async () => {
-      setLoading(true);
-      setError(null);
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=01947fdc028668cbba608f3d08618bef&language=en-US&query=${searchTerm}&page=1&include_adult=false`;
-
+    const fetchSearchResults = async () => {
+      setLoadingSearch(true);
       try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=01947fdc028668cbba608f3d08618bef&query=${encodeURIComponent(
+            searchTerm
+          )}`
+        );
 
+        if (!response.ok) {
+          throw new Error(
+            `API error: ${response.status} - ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
         if (data.results.length === 0) {
-          setError("No movies found.");
+          setErrorSearch("No movies found.");
         } else {
           setSearchResults(data.results);
         }
-      } catch (error) {
-        setError("An error occurred while fetching the data.");
-        console.error("Error fetching search results:", error);
+      } catch (err) {
+        setErrorSearch(err.message || "Error fetching search results.");
       } finally {
-        setLoading(false);
+        setLoadingSearch(false);
       }
     };
 
-    fetchMovies();
+    fetchSearchResults();
   }, [searchTerm]);
 
   return (
     <div className="home">
+      {/* Header Section */}
       <div className="header">
         <h1>ReactFlix</h1>
         <div className="search-bar">
@@ -56,19 +85,17 @@ const Home = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
-            onClick={() => {
-              if (searchTerm) {
-                setSearchTerm(searchTerm); 
-              }
-            }}
+            onClick={() => searchTerm && setSearchTerm(searchTerm)}
+            disabled={!searchTerm}
           >
             Search
           </button>
         </div>
       </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {/* Search Results */}
+      {loadingSearch && <p>Loading search results...</p>}
+      {errorSearch && <p>{errorSearch}</p>}
       {searchResults.length > 0 && (
         <div className="search-results">
           <h2>Search Results</h2>
@@ -79,17 +106,64 @@ const Home = () => {
           </div>
         </div>
       )}
-      {searchTerm && searchResults.length === 0 && !loading && !error && (
-        <p>No movies found.</p>
-      )}
-      {!searchTerm && (
-        <>
-          <PopularMovies />
-          <TopRatedMovies />
-          <UpcomingMovies />
-          <NowPlayingMovies />
-        </>
-      )}
+
+      {/* Popular Movies */}
+      <section>
+        <h2>Popular Movies</h2>
+        {status.popular === "loading" && <p>Loading popular movies...</p>}
+        {status.popular === "failed" && <p>Error: {error.popular}</p>}
+        {status.popular === "succeeded" && (
+          <div className="movie-list">
+            {popularMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Top Rated Movies */}
+      <section>
+        <h2>Top Rated Movies</h2>
+        {status.topRated === "loading" && <p>Loading top rated movies...</p>}
+        {status.topRated === "failed" && <p>Error: {error.topRated}</p>}
+        {status.topRated === "succeeded" && (
+          <div className="movie-list">
+            {topRatedMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Now Playing Movies */}
+      <section>
+        <h2>Now Playing Movies</h2>
+        {status.nowPlaying === "loading" && (
+          <p>Loading now playing movies...</p>
+        )}
+        {status.nowPlaying === "failed" && <p>Error: {error.nowPlaying}</p>}
+        {status.nowPlaying === "succeeded" && (
+          <div className="movie-list">
+            {nowPlayingMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Upcoming Movies */}
+      <section>
+        <h2>Upcoming Movies</h2>
+        {status.upcoming === "loading" && <p>Loading upcoming movies...</p>}
+        {status.upcoming === "failed" && <p>Error: {error.upcoming}</p>}
+        {status.upcoming === "succeeded" && (
+          <div className="movie-list">
+            {upcomingMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 };
